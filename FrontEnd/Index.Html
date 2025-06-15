@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NBA Stats</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Times da NBA</h1>
+    <ul id="lista-times"></ul>
+
+    <script>
+      fetch("https://localhost:5066/times") // ajuste a URL conforme sua API
+        .then((response) => response.json())
+        .then((times) => {
+          const ul = document.getElementById("lista-times");
+          times.forEach((time) => {
+            const li = document.createElement("li");
+            li.textContent = time.nomeDaEquipe; // ajuste conforme o nome da propriedade
+            ul.appendChild(li);
+          });
+        });
+    </script>
+  </body>
+</html>

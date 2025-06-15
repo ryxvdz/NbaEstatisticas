@@ -1,8 +1,17 @@
+using MeuBackend.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(10, 4, 32))
+    )
+);
 
 var app = builder.Build();
 
@@ -32,6 +41,11 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+app.MapGet("/times", async (MeuBackend.Data.AppDbContext db) =>
+{
+    return await db.Times.ToListAsync();
+});
 
 app.Run();
 
